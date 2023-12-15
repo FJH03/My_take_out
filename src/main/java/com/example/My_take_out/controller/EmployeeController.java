@@ -115,7 +115,7 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public R<Employee> getEmpById(@PathVariable long id) {
-        log.info("id ={}", id);
+        log.info("id = {}", id);
         LambdaQueryWrapper<Employee> employeeLambdaQueryWrapper = new LambdaQueryWrapper<>();
         employeeLambdaQueryWrapper.eq(Employee::getId, id);
         Employee employee = employeeService.getOne(employeeLambdaQueryWrapper);
