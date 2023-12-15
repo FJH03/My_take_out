@@ -54,6 +54,7 @@ public class CommonController {
 
     @GetMapping("/download")
     public void download(String name, HttpServletResponse resp) throws IOException {
+        log.info(name);
         ServletOutputStream outputStream = null;
         FileInputStream fileInputStream = null;
         try {
