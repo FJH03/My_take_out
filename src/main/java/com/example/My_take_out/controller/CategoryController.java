@@ -2,6 +2,7 @@ package com.example.My_take_out.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.My_take_out.anno.Log;
 import com.example.My_take_out.common.R;
 import com.example.My_take_out.pojo.Category;
 import com.example.My_take_out.service.CategoryService;
@@ -40,6 +41,7 @@ public class CategoryController {
         return R.success(pageInfo);
     }
 
+    @Log
     @PostMapping
     public R<String> add(@RequestBody Category category) {
         log.info("传入的category:{}", category);
@@ -47,6 +49,7 @@ public class CategoryController {
         return R.success("添加成功！");
     }
 
+    @Log
     @PutMapping
     public R<String> update(@RequestBody Category category) {
     log.info("传入的category:{}", category);
@@ -59,6 +62,7 @@ public class CategoryController {
      * @param ids
      * @return
      */
+    @Log
     @DeleteMapping
     public R<String> delete(Long ids) {
         log.info("传进来的ids:{}", ids);

@@ -3,6 +3,7 @@ package com.example.My_take_out.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.My_take_out.anno.Log;
 import com.example.My_take_out.common.R;
 import com.example.My_take_out.dto.SetmealDto;
 import com.example.My_take_out.pojo.Category;
@@ -68,6 +69,7 @@ public class SetmealController {
      * @param setmealDto
      * @return
      */
+    @Log
     @PostMapping
     public R<String> save(@RequestBody SetmealDto setmealDto) {
         log.info("setmealDto = {}", setmealDto);
@@ -80,6 +82,7 @@ public class SetmealController {
      * @param ids
      * @return
      */
+    @Log
     @DeleteMapping
     public R<String> delete(@RequestParam List<Long> ids) {
         log.info("ids = {}", ids);
@@ -99,6 +102,7 @@ public class SetmealController {
         return R.success(setmealDto);
     }
 
+    @Log
     @PutMapping
     public R<String> update(@RequestBody SetmealDto setmealDto) {
         log.info("setmealDto = {}", setmealDto);
@@ -106,6 +110,7 @@ public class SetmealController {
         return R.success("修改成功！");
     }
 
+    @Log
     @PostMapping("/status/{statu}")
     public R<String> changestatu(@RequestParam List<Long> ids, @PathVariable int statu) {
         log.info("ids = {}", ids);

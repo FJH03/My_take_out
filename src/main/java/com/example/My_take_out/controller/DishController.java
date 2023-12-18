@@ -3,6 +3,7 @@ package com.example.My_take_out.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.My_take_out.anno.Log;
 import com.example.My_take_out.common.R;
 import com.example.My_take_out.dto.DishDto;
 import com.example.My_take_out.pojo.Category;
@@ -31,7 +32,6 @@ import java.util.stream.Collectors;
 public class DishController {
     @Autowired
     private DishService dishService;
-
     @Autowired
     private CategoryService categoryService;
 
@@ -70,6 +70,7 @@ public class DishController {
      * @param dishDto
      * @return
      */
+    @Log
     @PostMapping
     public R<String> save(@RequestBody DishDto dishDto) {
         log.info("dishDto:{}", dishDto);
@@ -94,6 +95,7 @@ public class DishController {
      * @param dishDto
      * @return
      */
+    @Log
     @PutMapping
     public R<String> update(@RequestBody DishDto dishDto) {
         log.info("dishDto = {}", dishDto);
@@ -101,11 +103,12 @@ public class DishController {
         return R.success("修改成功！");
     }
 
+    @Log
     @DeleteMapping
     public R<String> delete(@RequestParam List<Long> ids) {
         log.info("ids = {}", ids);
         dishService.removeWithFlavors(ids);
-        return R.success("1");
+        return R.success("删除成功!");
     }
 
     @GetMapping("/list")
@@ -119,6 +122,7 @@ public class DishController {
         return R.success(dishService.list(lambdaQueryWrapper));
     }
 
+    @Log
     @PostMapping("/status/{statu}")
     public R<String> changestatu(@RequestParam List<Long> ids,@PathVariable int statu) {
         log.info("ids = {}", ids);

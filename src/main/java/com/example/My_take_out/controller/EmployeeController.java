@@ -3,6 +3,7 @@ package com.example.My_take_out.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.My_take_out.anno.Log;
 import com.example.My_take_out.common.R;
 import com.example.My_take_out.pojo.Employee;
 import com.example.My_take_out.service.EmployeeService;
@@ -68,6 +69,7 @@ public class EmployeeController {
         return R.success("退出成功");
     }
 
+    @Log
     @PostMapping
     public R<String> save(@RequestBody Employee employee) {
         log.info("新增员工，员工信息：{}", employee);
@@ -106,6 +108,7 @@ public class EmployeeController {
      * @param employee
      * @return
      */
+    @Log
     @PutMapping
     public R<String> update(@RequestBody Employee employee) {
         log.info("需要修改的员工实体数据{}", employee);

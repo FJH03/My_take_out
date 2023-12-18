@@ -1,0 +1,58 @@
+package com.example.My_take_out.aop;
+
+import com.alibaba.fastjson2.JSON;
+import com.example.My_take_out.pojo.OperateLog;
+import com.example.My_take_out.service.OperateLogService;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.util.Arrays;
+
+/**
+ * @Created with Intellij IDEA Ultimate 2022.02.03 正式旗舰版
+ * @Author: 2113042621-冯佳和
+ * @ClassName: LogAspect
+ * @Date: 2023/12/18
+ * @Time: 10:30
+ * @Description:添加自定义描述
+ */
+@Component
+@Aspect
+@Slf4j
+public class LogAspect {
+    @Autowired
+    HttpServletRequest httpServletRequest;
+    @Autowired
+    OperateLogService operateLogService;
+
+    @Around("@annotation(com.example.My_take_out.anno.Log)")
+    public Object reccordLog(ProceedingJoinPoint joinPoint) throws Throwable {
+        String employee = httpServletRequest.getSession().getAttribute("employee").toString();
+
+        String className = joinPoint.getTarget().getClass().getName();
+
+        String methonName = joinPoint.getSignature().getName();
+
+        Object args[] = joinPoint.getArgs();
+        String methodParms = Arrays.toString(args);
+
+        Long begin = System.currentTimeMillis();
+        Object result = joinPoint.proceed();
+        String returnValue = JSON.toJSONString(result);
+        Long end = System.currentTimeMillis();
+
+        Long costTime = end - begin;
+
+        LocalDateTime now = LocalDateTime.now();
+
+        OperateLog operateLog = new OperateLog( null,  Long.parseLong(employee) , now, className, methonName, methodParms, returnValue, costTime);
+        operateLogService.save(operateLog);
+        return result;
+    }
+}
