@@ -12,6 +12,4 @@ import java.lang.annotation.RetentionPolicy;
  * @Description:添加自定义描述
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Log {
-
-}
+public @interface Log {}

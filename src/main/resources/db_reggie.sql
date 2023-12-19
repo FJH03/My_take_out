@@ -373,3 +373,19 @@ CREATE TABLE `user` (
   `status` int(11) DEFAULT '0' COMMENT '状态 0:禁用，1:正常',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户信息';
+-- ----------------------------
+-- Table structure for Operation_log
+-- ----------------------------
+DROP table if exists operate_log;
+create table operate_log
+(
+    id            bigint auto_increment comment 'ID'
+        primary key,
+    operate_user  bigint  null comment '操作人ID',
+    operate_time  datetime      null comment '操作时间',
+    class_name    varchar(100)  null comment '操作的类名',
+    method_name   varchar(100)  null comment '操作的方法名',
+    method_params varchar(1000) null comment '方法参数',
+    return_value  varchar(2000) null comment '返回值',
+    cost_time     bigint        null comment '方法执行耗时, 单位:ms'
+)comment '操作日志表' engine = InnoDB;

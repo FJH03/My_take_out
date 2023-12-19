@@ -1,5 +1,7 @@
 package com.example.My_take_out.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +21,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OperateLog implements Serializable {
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private Long operateUser;
     private LocalDateTime operateTime;
