@@ -1,4 +1,4 @@
-package com.example.My_take_out.dto;
+package dto;
 
 import com.example.My_take_out.pojo.Dish;
 import com.example.My_take_out.pojo.DishFlavor;
@@ -20,5 +20,4 @@ public class DishDto extends Dish {
     private List<DishFlavor> flavors = new ArrayList<>();
     private String categoryName;
     private int copies;
-
 }

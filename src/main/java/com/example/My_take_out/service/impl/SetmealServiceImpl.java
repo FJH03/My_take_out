@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.My_take_out.common.CustomException;
 import com.example.My_take_out.common.MyfileMethods;
-import com.example.My_take_out.dto.SetmealDto;
+import dto.SetmealDto;
 import com.example.My_take_out.mapper.SetmealMapper;
 import com.example.My_take_out.pojo.Setmeal;
 import com.example.My_take_out.pojo.SetmealDish;

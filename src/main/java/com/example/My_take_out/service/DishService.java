@@ -1,7 +1,7 @@
 package com.example.My_take_out.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.My_take_out.dto.DishDto;
+import dto.DishDto;
 import com.example.My_take_out.pojo.Dish;
 
 import java.util.List;
@@ -17,8 +17,6 @@ import java.util.List;
 public interface DishService extends IService<Dish> {
     void saveWithFlavor(DishDto dishDto);
     DishDto getByIdWithFlavor(Long id);
-
     void updateWithFlavors(DishDto dishDto);
-
     void removeWithFlavors(List<Long> id);
 }

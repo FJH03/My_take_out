@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.My_take_out.common.CustomException;
 import com.example.My_take_out.common.MyfileMethods;
-import com.example.My_take_out.dto.DishDto;
+import dto.DishDto;
 import com.example.My_take_out.mapper.DishMapper;
 import com.example.My_take_out.pojo.Dish;
 import com.example.My_take_out.pojo.DishFlavor;

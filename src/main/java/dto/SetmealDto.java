@@ -1,4 +1,4 @@
-package com.example.My_take_out.dto;
+package dto;
 
 import com.example.My_take_out.pojo.Setmeal;
 import com.example.My_take_out.pojo.SetmealDish;
