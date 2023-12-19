@@ -1,6 +1,7 @@
 package com.example.My_take_out.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.My_take_out.common.CustomException;
 import com.example.My_take_out.mapper.CategoryMapper;
@@ -11,7 +12,10 @@ import com.example.My_take_out.service.CategoryService;
 import com.example.My_take_out.service.DishService;
 import com.example.My_take_out.service.SetmealService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @Created with Intellij IDEA Ultimate 2022.02.03 正式旗舰版
@@ -24,8 +28,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements CategoryService {
     @Autowired
+    @Lazy//循环依赖问题
     private DishService dishService;
     @Autowired
+    @Lazy//循环依赖问题
     private SetmealService setmealService;
 
     @Override
@@ -48,5 +54,26 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         }
 
         super.removeById(id);
+    }
+
+    @Override
+    public Page page(int page, int pageSize) {
+        //构造分页构造器
+        Page pageInfo = new Page(page, pageSize);
+
+        //构造条件构造器
+        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper<Category>()
+                .orderByDesc(Category::getUpdateTime);
+
+        return this.page(pageInfo, lambdaQueryWrapper);
+    }
+
+    @Override
+    public List<Category> list(Category category) {
+        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper<Category>()
+                .eq(Category::getType, category.getType())
+                .orderByAsc(Category::getSort)
+                .orderByDesc(Category::getUpdateTime);
+        return this.list(lambdaQueryWrapper);
     }
 }

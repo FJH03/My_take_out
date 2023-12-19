@@ -1,6 +1,8 @@
 package com.example.My_take_out.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.My_take_out.common.R;
 import dto.SetmealDto;
 import com.example.My_take_out.pojo.Setmeal;
 
@@ -22,4 +24,6 @@ public interface SetmealService extends IService<Setmeal> {
     SetmealDto getByIdWithDish(Long id);
 
     void updateWithDishes(SetmealDto setmealDto);
+
+    Page page(int page, int pageSize, String name);
 }

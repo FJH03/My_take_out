@@ -1,6 +1,5 @@
 package com.example.My_take_out.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.My_take_out.anno.Log;
 import com.example.My_take_out.common.R;
@@ -30,14 +29,7 @@ public class CategoryController {
     @GetMapping("/page")
     public R<Page> page(int page, int pageSize) {
         log.info("page = {}, pageSize = {}", page, pageSize);
-        //构造分页构造器
-        Page pageInfo = new Page(page, pageSize);
-
-        //构造条件构造器
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper<Category>()
-                .orderByDesc(Category::getUpdateTime);
-
-        categoryService.page(pageInfo, lambdaQueryWrapper);
+        Page pageInfo = categoryService.page(page, pageSize);
         return R.success(pageInfo);
     }
 
@@ -52,8 +44,8 @@ public class CategoryController {
     @Log
     @PutMapping
     public R<String> update(@RequestBody Category category) {
-    log.info("传入的category:{}", category);
-    categoryService.updateById(category);
+        log.info("传入的category:{}", category);
+        categoryService.updateById(category);
         return R.success("修改成功！");
     }
 
@@ -66,19 +58,14 @@ public class CategoryController {
     @DeleteMapping
     public R<String> delete(Long ids) {
         log.info("传进来的ids:{}", ids);
-
         categoryService.remove(ids);
         return R.success("删除成功！");
     }
 
     @GetMapping("/list")
     public R<List<Category>> list(Category category) {
-        log.info("type:{}",category);
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper<Category>()
-                .eq(Category::getType, category.getType())
-                .orderByAsc(Category::getSort)
-                .orderByDesc(Category::getUpdateTime);
-        List categoryList = categoryService.list(lambdaQueryWrapper);
+        log.info("type:{}", category);
+        List categoryList = categoryService.list(category);
         return R.success(categoryList);
     }
 }

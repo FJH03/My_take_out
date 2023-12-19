@@ -1,10 +1,15 @@
 package com.example.My_take_out.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.My_take_out.common.CustomException;
 import com.example.My_take_out.common.MyfileMethods;
+import com.example.My_take_out.common.R;
+import com.example.My_take_out.pojo.Category;
+import com.example.My_take_out.service.CategoryService;
 import dto.DishDto;
 import com.example.My_take_out.mapper.DishMapper;
 import com.example.My_take_out.pojo.Dish;
@@ -17,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,14 +40,54 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements DishService {
-
     @Value("${my_takeout.path}")
     private String Path;
-    @Autowired
-    private DishFlavorService dishFlavorService;
 
     @Autowired
+    @Lazy//循环依赖问题
+    private CategoryService categoryService;
+    @Autowired
+    private DishFlavorService dishFlavorService;
+    @Autowired
     private SetmealDishService setmealDishService;
+
+    @Override
+    public Page page(int page, int pageSize, String name) {
+        Page pageInfo = new Page(page, pageSize);
+        Page dishDtoPage = new Page();
+
+        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper<Dish>()
+                .like(name != null, Dish::getName, name)
+                .orderByDesc(Dish::getUpdateTime);
+        this.page(pageInfo, lambdaQueryWrapper);
+
+        BeanUtils.copyProperties(pageInfo, dishDtoPage, "records");
+
+        List<Dish> records = pageInfo.getRecords();
+        List<DishDto> dishDtos = records.stream().map((item) -> {
+            DishDto dishDto = new DishDto();
+            BeanUtils.copyProperties(item, dishDto);
+
+            Long categoryId = item.getCategoryId();
+            Category category = categoryService.getById((categoryId));
+            String categoryName = category.getName();
+            dishDto.setCategoryName(categoryName);
+            return dishDto;
+        }).collect(Collectors.toList());
+
+        dishDtoPage.setRecords(dishDtos);
+        return dishDtoPage;
+    }
+
+    @Override
+    public List<Dish> getDishById(Dish dish) {
+        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper<Dish>()
+                .eq(Dish::getStatus, 1)
+                .like(dish.getName() != null, Dish::getName, dish.getName())
+                .eq(dish.getCategoryId() != null, Dish::getCategoryId , dish.getCategoryId())
+                .orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
+        return this.list(lambdaQueryWrapper);
+    }
 
     /**
      * 新增菜品，同时保存对应的口味数据(操作两张表)
@@ -154,5 +200,18 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
             myfileMethods.backepTofile();
             throw new CustomException(e.getMessage());
         }
+    }
+
+    /**
+     * 批量改变商品的销售状态
+     * @param ids
+     * @param statu
+     */
+    @Override
+    public void changestatu(List<Long> ids, int statu) {
+        LambdaUpdateWrapper lambdaUpdateWrapper = new LambdaUpdateWrapper<Dish>()
+                .in(Dish::getId, ids)
+                .set(Dish::getStatus, statu);
+        this.update(lambdaUpdateWrapper);
     }
 }

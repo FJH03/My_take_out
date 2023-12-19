@@ -1,7 +1,5 @@
 package com.example.My_take_out.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.My_take_out.anno.Log;
 import com.example.My_take_out.common.R;
@@ -31,29 +29,12 @@ public class EmployeeController {
 
     /**
      * 员工登录
-     * @param Req
      * @param employee
      * @return
      */
     @PostMapping("/login")
-    public R<Employee> login(HttpServletRequest Req,  @RequestBody Employee employee) {
-        //将提交的密码进行md5加密处理
-        String password = DigestUtils.md5DigestAsHex(employee.getPassword().getBytes());
-        LambdaQueryWrapper<Employee> employeeLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        employeeLambdaQueryWrapper.eq(Employee::getUsername, employee.getUsername());
-        Employee emp = employeeService.getOne(employeeLambdaQueryWrapper);
-
-        if (emp == null || !emp.getPassword().equals(password)) {
-            return R.error("登录失败，用户名或密码错误！");
-        }
-
-        //查看员工状态
-        if (emp.getStatus() == 0) {
-            return R.error("该用户位于黑名单！");
-        }
-
-        //登陆成功逻辑
-        Req.getSession().setAttribute("employee", emp.getId());
+    public R<Employee> login(@RequestBody Employee employee) {
+        Employee emp = employeeService.login(employee);
         return R.success(emp);
     }
 
@@ -63,7 +44,7 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/logout")
-    public R<String> logout(HttpServletRequest req){
+    public R<String> logout(HttpServletRequest req) {
         //清理Session中保存的当前登录员工的id
         req.getSession().removeAttribute("employee");
         return R.success("退出成功");
@@ -90,17 +71,7 @@ public class EmployeeController {
     @GetMapping("/page")
     public R<Page> page(int page, int pageSize, String name) {
         log.info("page = {}, pageSize = {}, name = {}", page, pageSize, name);
-        //构造分页构造器
-        Page pageInfo = new Page(page, pageSize);
-
-        //构造条件构造器
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper<Employee>()
-                .like(StringUtils.isNotEmpty(name), Employee::getName, name)
-                .orderByDesc(Employee::getUpdateTime);
-
-        //执行查询
-        employeeService.page(pageInfo, lambdaQueryWrapper);
-        return R.success(pageInfo);
+        return R.success(employeeService.page(page, pageSize, name));
     }
 
     /**
@@ -119,9 +90,6 @@ public class EmployeeController {
     @GetMapping("/{id}")
     public R<Employee> getEmpById(@PathVariable long id) {
         log.info("id = {}", id);
-        LambdaQueryWrapper<Employee> employeeLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        employeeLambdaQueryWrapper.eq(Employee::getId, id);
-        Employee employee = employeeService.getOne(employeeLambdaQueryWrapper);
-        return R.success(employee);
+        return R.success(employeeService.getEmpById(id));
     }
 }

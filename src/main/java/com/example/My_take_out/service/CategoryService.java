@@ -1,7 +1,10 @@
 package com.example.My_take_out.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.My_take_out.pojo.Category;
+
+import java.util.List;
 
 /**
  * @Created with Intellij IDEA Ultimate 2022.02.03 正式旗舰版
@@ -13,4 +16,6 @@ import com.example.My_take_out.pojo.Category;
  */
 public interface CategoryService extends IService<Category> {
     void remove(Long id);
+    Page page(int page, int pageSize);
+    List<Category> list(Category category);
 }

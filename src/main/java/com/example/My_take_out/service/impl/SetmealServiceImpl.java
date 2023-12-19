@@ -1,9 +1,12 @@
 package com.example.My_take_out.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.My_take_out.common.CustomException;
 import com.example.My_take_out.common.MyfileMethods;
+import com.example.My_take_out.pojo.Category;
+import com.example.My_take_out.service.CategoryService;
 import dto.SetmealDto;
 import com.example.My_take_out.mapper.SetmealMapper;
 import com.example.My_take_out.pojo.Setmeal;
@@ -13,6 +16,7 @@ import com.example.My_take_out.service.SetmealService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +38,9 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
     private String Path;
     @Autowired
     private SetmealDishService setmealDishService;
+    @Autowired
+    @Lazy//循环依赖问题
+    private CategoryService categoryService;
 
     /**
      * 新增套餐，同时需要保存套餐和菜品的关联关系
@@ -121,5 +128,32 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
 
         //保存菜品信息到setmeal_dish表
         setmealDishService.saveBatch(setmealDishList);
+    }
+
+    @Override
+    public Page page(int page, int pageSize, String name) {
+        Page pageInfo = new Page(page, pageSize);
+        Page setmealDtopage = new Page();
+
+        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper<Setmeal>()
+                .like(name != null, Setmeal::getName, name)
+                .orderByDesc(Setmeal::getUpdateTime);
+        this.page(pageInfo, lambdaQueryWrapper);
+
+        BeanUtils.copyProperties(pageInfo, setmealDtopage, "records");
+
+        List<Setmeal> setmealList = pageInfo.getRecords();
+        List<SetmealDto> setmealDtos = setmealList.stream().map((item) -> {
+            SetmealDto setmealDto = new SetmealDto();
+            BeanUtils.copyProperties(item, setmealDto);
+
+            Long categoryId = item.getCategoryId();
+            Category category = categoryService.getById(categoryId);
+            String categoryName = category.getName();
+            setmealDto.setCategoryName(categoryName);
+            return setmealDto;
+        }).collect(Collectors.toList());
+        setmealDtopage.setRecords(setmealDtos);
+        return setmealDtopage;
     }
 }

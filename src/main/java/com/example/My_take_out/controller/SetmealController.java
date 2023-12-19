@@ -33,35 +33,10 @@ public class SetmealController {
     @Autowired
     private SetmealService setmealService;
 
-    @Autowired
-    private CategoryService categoryService;
-
     @GetMapping("/page")
     public R<Page> page(int page, int pageSize, String name) {
         log.info("page = {}, pageSize = {}", page, pageSize);
-        Page pageInfo = new Page(page, pageSize);
-        Page setmealDtopage = new Page();
-
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper<Setmeal>()
-                .like(name != null, Setmeal::getName, name)
-                .orderByDesc(Setmeal::getUpdateTime);
-        setmealService.page(pageInfo, lambdaQueryWrapper);
-
-        BeanUtils.copyProperties(pageInfo, setmealDtopage, "records");
-
-        List<Setmeal> setmealList = pageInfo.getRecords();
-        List<SetmealDto> setmealDtos = setmealList.stream().map((item) -> {
-            SetmealDto setmealDto = new SetmealDto();
-            BeanUtils.copyProperties(item, setmealDto);
-
-            Long categoryId = item.getCategoryId();
-            Category category = categoryService.getById(categoryId);
-            String categoryName = category.getName();
-            setmealDto.setCategoryName(categoryName);
-            return setmealDto;
-        }).collect(Collectors.toList());
-        setmealDtopage.setRecords(setmealDtos);
-        return R.success(setmealDtopage);
+        return R.success(setmealService.page(page, pageSize, name));
     }
 
     /**
