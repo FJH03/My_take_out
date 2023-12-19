@@ -85,10 +85,7 @@ public class SetmealController {
     @PostMapping("/status/{statu}")
     public R<String> changestatu(@RequestParam List<Long> ids, @PathVariable int statu) {
         log.info("ids = {}", ids);
-        LambdaUpdateWrapper lambdaUpdateWrapper = new LambdaUpdateWrapper<Setmeal>()
-                .in(Setmeal::getId, ids)
-                .set(Setmeal::getStatus, statu);
-        setmealService.update(lambdaUpdateWrapper);
+        setmealService.changestu(ids, statu);
         return R.success("成功停售对应的套餐！");
     }
 }

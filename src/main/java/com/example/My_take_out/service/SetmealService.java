@@ -26,4 +26,6 @@ public interface SetmealService extends IService<Setmeal> {
     void updateWithDishes(SetmealDto setmealDto);
 
     Page page(int page, int pageSize, String name);
+
+    void changestu(List<Long> ids, int statu);
 }

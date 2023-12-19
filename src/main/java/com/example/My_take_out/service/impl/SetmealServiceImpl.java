@@ -1,6 +1,7 @@
 package com.example.My_take_out.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.My_take_out.common.CustomException;
@@ -155,5 +156,13 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
         }).collect(Collectors.toList());
         setmealDtopage.setRecords(setmealDtos);
         return setmealDtopage;
+    }
+
+    @Override
+    public void changestu(List<Long> ids, int statu) {
+        LambdaUpdateWrapper lambdaUpdateWrapper = new LambdaUpdateWrapper<Setmeal>()
+                .in(Setmeal::getId, ids)
+                .set(Setmeal::getStatus, statu);
+        this.update(lambdaUpdateWrapper);
     }
 }
