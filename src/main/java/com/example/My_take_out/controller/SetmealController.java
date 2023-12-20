@@ -1,12 +1,9 @@
 package com.example.My_take_out.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.My_take_out.anno.Log;
 import com.example.My_take_out.common.R;
-import dto.SetmealDto;
-import com.example.My_take_out.pojo.Setmeal;
+import com.example.My_take_out.dto.SetmealDto;
 import com.example.My_take_out.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

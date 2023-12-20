@@ -27,14 +27,20 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         log.info("请求的URL:{}", url);
 
         Object employee = req.getSession().getAttribute("employee");
-        if (employee == null) {
+        Object user = req.getSession().getAttribute("user");
+        if (employee == null && user == null) {
             log.info("请求头为空，返回未登录");
             R<String> error = R.error("NOTLOGIN");
             String notlogin = JSONObject.toJSONString(error);
             resp.getWriter().write(notlogin);
             return false;
         } else {
-            log.info("请求用户{}", employee);
+            if (employee == null) {
+                log.info("请求用户为:{}", user);
+            } else if (user == null) {
+                log.info("请求员工为:{}", employee);
+            }
+
             return true;
         }
     }

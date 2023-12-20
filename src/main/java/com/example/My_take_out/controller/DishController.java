@@ -3,7 +3,7 @@ package com.example.My_take_out.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.My_take_out.anno.Log;
 import com.example.My_take_out.common.R;
-import dto.DishDto;
+import com.example.My_take_out.dto.DishDto;
 import com.example.My_take_out.pojo.Dish;
 import com.example.My_take_out.service.DishService;
 import lombok.extern.slf4j.Slf4j;

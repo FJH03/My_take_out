@@ -43,7 +43,9 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
                 "/employee/login",
                 "/employee/logout",
                 "/backend/**",
-                "/front/**"
+                "/front/**",
+                "/user/sendMsg",
+                "/user/login"
         };
         registry.addInterceptor(loginCheckInterceptor).addPathPatterns("/**").excludePathPatterns(path);
     }
