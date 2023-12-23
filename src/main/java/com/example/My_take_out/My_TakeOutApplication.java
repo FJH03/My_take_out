@@ -9,10 +9,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableTransactionManagement
 public class My_TakeOutApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(My_TakeOutApplication.class, args);
         log.info("项目启动成功");
     }
-
 }
