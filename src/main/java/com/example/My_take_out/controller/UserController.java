@@ -49,4 +49,10 @@ public class UserController {
         return R.success(user);
     }
 
+    @PostMapping("/loginout")
+    public R<String> loginout() {
+        userService.loginout();
+        return R.success("登出成功！");
+    }
+
 }

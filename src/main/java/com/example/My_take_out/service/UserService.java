@@ -17,4 +17,6 @@ public interface UserService extends IService<User> {
     boolean sendMsg(User user);
 
     User login(Map map);
+
+    void loginout();
 }

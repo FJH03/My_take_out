@@ -68,4 +68,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         return null;
     }
+
+    @Override
+    public void loginout() {
+        session.removeAttribute("user");
+    }
 }

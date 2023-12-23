@@ -35,19 +35,33 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         metaObject.setValue("updateTime", LocalDateTime.now());
 
         Long empId = (Long) req.getSession().getAttribute("employee");
+        Long userId = (Long) req.getSession().getAttribute("user");
 
-        metaObject.setValue("createUser", empId);
-        metaObject.setValue("updateUser", empId);
+        if (empId == null) {
+            metaObject.setValue("createUser", userId);
+            metaObject.setValue("updateUser", userId);
+        } else {
+            metaObject.setValue("createUser", empId);
+            metaObject.setValue("updateUser", empId);
+        }
         log.info(metaObject.toString());
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         log.info("公共字段自动填充[update]...");
-        Long empId = (Long) req.getSession().getAttribute("employee");
 
         metaObject.setValue("updateTime", LocalDateTime.now());
-        metaObject.setValue("updateUser", empId);
+
+        Long empId = (Long) req.getSession().getAttribute("employee");
+        Long userId = (Long) req.getSession().getAttribute("user");
+
+        if (empId == null) {
+            metaObject.setValue("updateUser", userId);
+        } else {
+            metaObject.setValue("updateUser", empId);
+        }
+
         log.info(metaObject.toString());
     }
 }
