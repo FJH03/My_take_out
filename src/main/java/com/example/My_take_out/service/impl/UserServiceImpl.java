@@ -39,7 +39,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             //调用短信服务API(略)
 
             session.setAttribute(phone, code);
-            System.out.println(session.getAttribute(phone));
             return true;
         }
 

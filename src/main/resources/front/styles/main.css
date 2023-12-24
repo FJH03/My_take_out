@@ -584,6 +584,7 @@
 }
 
 #main .dialogCart .divCartContent .divCartItem .divNum {
+  font-size: 15rem;
   position: absolute;
   right: 0;
   bottom: 10rem;

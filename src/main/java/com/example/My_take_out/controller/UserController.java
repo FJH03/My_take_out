@@ -1,12 +1,8 @@
 package com.example.My_take_out.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.example.My_take_out.common.R;
 import com.example.My_take_out.pojo.User;
 import com.example.My_take_out.service.UserService;
-import com.example.My_take_out.utils.ValidateCodeUtils;
-import jakarta.servlet.http.HttpSession;
-import jogamp.nativewindow.windows.MARGINS;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

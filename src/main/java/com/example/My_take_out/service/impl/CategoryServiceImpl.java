@@ -71,7 +71,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     @Override
     public List<Category> list(Category category) {
         LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper<Category>()
-                .eq(Category::getType, category.getType())
+                .eq(category.getType() != null, Category::getType, category.getType())
                 .orderByAsc(Category::getSort)
                 .orderByDesc(Category::getUpdateTime);
         return this.list(lambdaQueryWrapper);

@@ -17,7 +17,7 @@ import java.util.List;
  */
 public interface DishService extends IService<Dish> {
     Page page(int page, int pageSize, String name);
-    List<Dish> getDishById(Dish dish);
+    List<DishDto> getDishlist(Dish dish);
     void saveWithFlavor(DishDto dishDto);
     DishDto getByIdWithFlavor(Long id);
     void updateWithFlavors(DishDto dishDto);

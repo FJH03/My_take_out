@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.My_take_out.anno.Log;
 import com.example.My_take_out.common.R;
 import com.example.My_take_out.dto.SetmealDto;
+import com.example.My_take_out.pojo.Setmeal;
 import com.example.My_take_out.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,5 +85,11 @@ public class SetmealController {
         log.info("ids = {}", ids);
         setmealService.changestu(ids, statu);
         return R.success("成功停售对应的套餐！");
+    }
+
+    @GetMapping("/list")
+    public R<List<SetmealDto>> mylist(Setmeal setmeal) {
+        log.info("setmeal = {}", setmeal);
+        return R.success(setmealService.mylist(setmeal));
     }
 }

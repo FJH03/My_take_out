@@ -1,5 +1,6 @@
 package com.example.My_take_out.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -79,13 +80,28 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
     }
 
     @Override
-    public List<Dish> getDishById(Dish dish) {
+    public List<DishDto> getDishlist(Dish dish) {
         LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper<Dish>()
                 .eq(Dish::getStatus, 1)
                 .like(dish.getName() != null, Dish::getName, dish.getName())
                 .eq(dish.getCategoryId() != null, Dish::getCategoryId , dish.getCategoryId())
                 .orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
-        return this.list(lambdaQueryWrapper);
+
+        List<Dish> list = this.list(lambdaQueryWrapper);
+        List<DishDto> dishDtos = list.stream().map((item) -> {
+            DishDto dishDto = new DishDto();
+            BeanUtils.copyProperties(item, dishDto);
+            Long dishId = item.getId();
+
+            LambdaQueryWrapper querywrapper = new LambdaQueryWrapper<DishFlavor>()
+                    .eq(DishFlavor::getDishId, dishId);
+
+            List<DishFlavor> dishFlavorlist = dishFlavorService.list(querywrapper);
+            dishDto.setFlavors(dishFlavorlist);
+            return dishDto;
+        }).collect(Collectors.toList());
+
+        return dishDtos;
     }
 
     /**

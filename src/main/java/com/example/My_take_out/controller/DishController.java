@@ -80,9 +80,9 @@ public class DishController {
     }
 
     @GetMapping("/list")
-    public R<List<Dish>> getDishById(Dish dish) {
-        log.info("dish = {}", dish);
-        return R.success(dishService.getDishById(dish));
+    public R<List<DishDto>> getDishlist(Dish dish) {
+        log.info("dishDto = {}", dish);
+        return R.success(dishService.getDishlist(dish));
     }
 
     /**

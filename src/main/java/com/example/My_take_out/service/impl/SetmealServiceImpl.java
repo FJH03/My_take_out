@@ -165,4 +165,14 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
                 .set(Setmeal::getStatus, statu);
         this.update(lambdaUpdateWrapper);
     }
+
+    @Override
+    public List<SetmealDto> mylist(Setmeal setmeal) {
+        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper<Setmeal>()
+                .eq(setmeal.getCategoryId() != null, Setmeal::getCategoryId, setmeal.getCategoryId())
+                .eq(setmeal.getStatus() != null, Setmeal::getStatus, setmeal.getStatus())
+                .orderByDesc(Setmeal::getUpdateTime);
+
+        return this.list(lambdaQueryWrapper);
+    }
 }
