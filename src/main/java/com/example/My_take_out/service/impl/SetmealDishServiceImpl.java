@@ -1,14 +1,10 @@
 package com.example.My_take_out.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.My_take_out.mapper.SetmealDishMapper;
-import com.example.My_take_out.pojo.Setmeal;
 import com.example.My_take_out.pojo.SetmealDish;
 import com.example.My_take_out.service.SetmealDishService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @Created with Intellij IDEA Ultimate 2022.02.03 正式旗舰版

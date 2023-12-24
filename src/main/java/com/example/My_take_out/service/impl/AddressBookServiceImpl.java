@@ -3,7 +3,6 @@ package com.example.My_take_out.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.My_take_out.anno.Log;
 import com.example.My_take_out.mapper.AddressBookMapper;
 import com.example.My_take_out.pojo.AddressBook;
 import com.example.My_take_out.service.AddressBookService;
