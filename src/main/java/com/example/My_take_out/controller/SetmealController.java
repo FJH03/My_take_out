@@ -3,6 +3,7 @@ package com.example.My_take_out.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.My_take_out.anno.Log;
 import com.example.My_take_out.common.R;
+import com.example.My_take_out.dto.DishDto;
 import com.example.My_take_out.dto.SetmealDto;
 import com.example.My_take_out.pojo.Setmeal;
 import com.example.My_take_out.service.SetmealService;
@@ -88,8 +89,14 @@ public class SetmealController {
     }
 
     @GetMapping("/list")
-    public R<List<SetmealDto>> mylist(Setmeal setmeal) {
+    public R<List<Setmeal>> mylist(Setmeal setmeal) {
         log.info("setmeal = {}", setmeal);
         return R.success(setmealService.mylist(setmeal));
+    }
+
+    @GetMapping("/dish/{id}")
+    public R<List<DishDto>> getDishBySetmealId(@PathVariable Long id) {
+        log.info("id = {}", id);
+        return R.success(setmealService.getDishBySetmealId(id));
     }
 }

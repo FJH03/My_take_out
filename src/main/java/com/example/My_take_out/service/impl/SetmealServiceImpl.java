@@ -6,12 +6,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.My_take_out.common.CustomException;
 import com.example.My_take_out.common.MyfileMethods;
+import com.example.My_take_out.dto.DishDto;
 import com.example.My_take_out.pojo.Category;
+import com.example.My_take_out.pojo.Dish;
 import com.example.My_take_out.service.CategoryService;
 import com.example.My_take_out.dto.SetmealDto;
 import com.example.My_take_out.mapper.SetmealMapper;
 import com.example.My_take_out.pojo.Setmeal;
 import com.example.My_take_out.pojo.SetmealDish;
+import com.example.My_take_out.service.DishService;
 import com.example.My_take_out.service.SetmealDishService;
 import com.example.My_take_out.service.SetmealService;
 import org.springframework.beans.BeanUtils;
@@ -39,6 +42,9 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
     private String Path;
     @Autowired
     private SetmealDishService setmealDishService;
+
+    @Autowired
+    private DishService dishService;
     @Autowired
     @Lazy//循环依赖问题
     private CategoryService categoryService;
@@ -167,12 +173,47 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
     }
 
     @Override
-    public List<SetmealDto> mylist(Setmeal setmeal) {
+    public List<Setmeal> mylist(Setmeal setmeal) {
         LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper<Setmeal>()
                 .eq(setmeal.getCategoryId() != null, Setmeal::getCategoryId, setmeal.getCategoryId())
                 .eq(setmeal.getStatus() != null, Setmeal::getStatus, setmeal.getStatus())
                 .orderByDesc(Setmeal::getUpdateTime);
 
         return this.list(lambdaQueryWrapper);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public List<DishDto> getDishBySetmealId(Long id) {
+        Setmeal setmeal = this.getById(id);
+
+        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper<SetmealDish>()
+                .eq(SetmealDish::getSetmealId, setmeal.getId());
+        List<SetmealDish> setmealDishes = setmealDishService.list(lambdaQueryWrapper);
+
+        List<Long> ids = setmealDishes.stream().map((item) -> {
+            Long id_temp = item.getDishId();
+            return id_temp;
+        } ).collect(Collectors.toList());
+
+        LambdaQueryWrapper queryWrapper = new LambdaQueryWrapper<Dish>()
+                .in(Dish::getId, ids);
+
+        List<Dish> dishes = dishService.list(queryWrapper);
+        List<DishDto> dishDtos = dishes.stream().map((item) -> {
+            DishDto dishDto = new DishDto();
+
+            Long id_temp = item.getId();
+            System.out.println(id_temp);
+            LambdaQueryWrapper queryWrapper1 = new LambdaQueryWrapper<SetmealDish>()
+                    .eq(SetmealDish::getDishId, id_temp);
+            SetmealDish setmealDish = setmealDishService.getOne(queryWrapper1);
+            dishDto.setCopies(setmealDish.getCopies());
+
+            BeanUtils.copyProperties(item, dishDto);
+            return dishDto;
+        }).collect(Collectors.toList());
+
+        return dishDtos;
     }
 }

@@ -2,6 +2,7 @@ package com.example.My_take_out.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.My_take_out.dto.DishDto;
 import com.example.My_take_out.dto.SetmealDto;
 import com.example.My_take_out.pojo.Setmeal;
 
@@ -28,5 +29,7 @@ public interface SetmealService extends IService<Setmeal> {
 
     void changestu(List<Long> ids, int statu);
 
-     List<SetmealDto> mylist(Setmeal setmeal);
+     List<Setmeal> mylist(Setmeal setmeal);
+
+    List<DishDto> getDishBySetmealId(Long id);
 }
