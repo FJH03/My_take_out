@@ -7,9 +7,7 @@ import com.example.My_take_out.pojo.Orders;
 import com.example.My_take_out.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Created with Intellij IDEA Ultimate 2022.02.03 正式旗舰版
@@ -35,5 +33,12 @@ public class OrdersController {
                 .orderByDesc(Orders::getOrderTime);
         orderService.page(pageInfo, lambdaQueryWrapper);
         return R.success(pageInfo);
+    }
+
+    @PostMapping("/submit")
+    public R<String> submit(@RequestBody Orders orders) {
+        log.info("order = {}", orders);
+        orderService.submit(orders);
+        return R.success("提交成功！");
     }
 }

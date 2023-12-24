@@ -34,6 +34,7 @@ public class LogAspect {
     @Around("@annotation(com.example.My_take_out.anno.Log)")
     public Object reccordLog(ProceedingJoinPoint joinPoint) throws Throwable {
         Long employee = (Long) httpServletRequest.getSession().getAttribute("employee");
+        Long user = (Long) httpServletRequest.getSession().getAttribute("user");
 
         String className = joinPoint.getTarget().getClass().getName();
 
@@ -51,7 +52,13 @@ public class LogAspect {
 
         LocalDateTime now = LocalDateTime.now();
 
-        OperateLog operateLog = new OperateLog( null,  employee , now, className, methonName, methodParms, returnValue, costTime);
+        OperateLog operateLog = new OperateLog( null,  null , now, className, methonName, methodParms, returnValue, costTime);
+
+        if (employee != null) {
+            operateLog.setOperateUser(employee);
+        } else if (user != null) {
+            operateLog.setOperateUser(user);
+        }
         operateLogService.save(operateLog);
         return result;
     }
