@@ -1,0 +1,56 @@
+
+mybatis-plus:
+  mapper-locations: classpath*:mybatis/mapper/**/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: assign_id
+
+my_takeout:
+  path: ./upload/
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: SXY-E.YT
+    url: jdbc:mysql://localhost:3306/my_take_out
+    # platform: mysql
+    # 使用druid连接池
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      maxActive: 30 #参考公式   连接数 = ((核心数 * 2) + 有效磁盘数)
+      initialSize: 5 #一般最小设置为5到10之间防止闲置连接过多
+      maxWait: 60000
+      minIdle: 1
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      database: 0
+  cache:
+    redis:
+      time-to-live: 1800000
+
+
+
+
+
+
