@@ -10,7 +10,6 @@ import com.example.My_take_out.utils.ValidateCodeUtils;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +55,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String phone = map.get("phone").toString();
         String code = map.get("code").toString();
 
-        String matchcode = redisTemplate.opsForValue().get(phone).toString();
+        String matchcode = redisTemplate.opsForValue().get(phone);
 
         if (matchcode != null && matchcode.equals(code)) {
             LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper<User>()
