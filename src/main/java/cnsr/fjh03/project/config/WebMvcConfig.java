@@ -41,7 +41,9 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         String[] path = new String[] {
                 "/employee/login",
                 "/employee/logout",
-                "/backend/**"
+                "/backend/**",
+                "/user/sendMsg",
+                "/user/login"
         };
         registry.addInterceptor(loginCheckInterceptor).addPathPatterns("/**").excludePathPatterns(path);
     }
