@@ -34,5 +34,8 @@ build/
 ### VS Code ###
 .vscode/
 
+# 参考内容
+useless/
+
 ### Mac OS ###
 .DS_Store

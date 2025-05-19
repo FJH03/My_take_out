@@ -34,6 +34,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         log.info("开始进行静态资源映射...");
         registry.addResourceHandler("/backend/**").addResourceLocations("classpath:/backend/");
+        registry.addResourceHandler("/front/**").addResourceLocations("classpath:/front/");
     }
 
     @Override
@@ -42,8 +43,9 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
                 "/employee/login",
                 "/employee/logout",
                 "/backend/**",
-                "/user/sendMsg",
-                "/user/login"
+                "/front/**",
+                "/user/login",
+                "/user/sendMsg"
         };
         registry.addInterceptor(loginCheckInterceptor).addPathPatterns("/**").excludePathPatterns(path);
     }
