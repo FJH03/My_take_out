@@ -3,6 +3,8 @@ package cnsr.fjh03.project.service;
 import cnsr.fjh03.project.pojo.Orders;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Map;
+
 /**
  * @Created with Intellij IDEA Ultimate 2022.02.03 正式旗舰版
  * @Author: 2113042621-冯佳和
@@ -13,4 +15,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface OrderService extends IService<Orders> {
     void submit(Orders orders);
+
+    void again(Map<String, String> map);
 }

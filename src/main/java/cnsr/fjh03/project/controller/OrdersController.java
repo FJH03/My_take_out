@@ -13,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @Created with Intellij IDEA Ultimate 2022.02.03 正式旗舰版
@@ -70,7 +71,7 @@ public class OrdersController {
      * @param orders
      * @return
      */
-    @PutMapping()
+    @PutMapping
     public R<String> orderStatus(@RequestBody Orders orders){
         // 修改状态
         orderService.updateById(orders);
@@ -91,5 +92,11 @@ public class OrdersController {
     @GetMapping("/userPage")
     public R<Page> page(int page, int pageSize) {
         return R.success(userService.page(page, pageSize));
+    }
+
+    @PostMapping("/again")
+    public R<String> againSubmit(@RequestBody Map<String,String> map) {
+        orderService.again(map);
+        return R.success("操作成功！");
     }
 }
