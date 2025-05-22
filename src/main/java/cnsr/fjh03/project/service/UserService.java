@@ -1,6 +1,7 @@
 package cnsr.fjh03.project.service;
 
 import cnsr.fjh03.project.pojo.User;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.Map;
@@ -19,4 +20,6 @@ public interface UserService extends IService<User> {
     User login(Map map);
 
     void loginout();
+
+    Page page(int page, int pageSize);
 }
